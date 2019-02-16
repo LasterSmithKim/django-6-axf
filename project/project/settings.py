@@ -25,7 +25,7 @@ SECRET_KEY = 'r4h$hn+m$5s%$tgsptm_xwo8vki34l)qtkr8z#4tay+i--7%(p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'axf',
         'USER': 'usermysite',
         'PASSWORD': 'smithkim123',
-        'HOST': '192.168.1.111',
+        'HOST': '192.168.43.136',
         'PORT': '5432',
     }
 }
