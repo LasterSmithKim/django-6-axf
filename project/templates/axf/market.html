@@ -7,9 +7,95 @@
 {% endblock linkscript  %}
 
 {% block base  %}
-<h1>sunck is a good man</h1>
-<h1>sunck is a good man</h1>
-<h1>sunck is a good man</h1>
-<h1>sunck is a good man</h1>
-<h1>market</h1>
+<div id="market">
+    <aside>
+        <menu>
+            <ul>
+                {% for item in leftSlider %}
+                <li>
+                    <span class="yellowSlide"></span>
+                    <a href="/market/{{item.typeid}}/0">{{item.typename}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </menu>
+    </aside>
+
+    <section>
+        <nav>
+            <ul>
+                <li>
+                    <span id="all_type">
+                        全部类型
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </span>
+                </li>
+                <li>
+                    <span id="all_sort">
+                        综合排序
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+
+        <menu>
+            <ul>
+                {% for i in productList %}
+                    <li>
+                        <a href="#">
+                            <img src="{{ i.productimg }}" alt="">
+                            <div class="shoppingInfo">
+                                <h6>{{ i.productlongname }}</h6>
+                                <p class="detailTag">
+                                    <span>精选</span>
+                                    <span></span>
+                                </p>
+                                <p class="unit">{{ i.specifics }}</p>
+                                <p class="price">
+                                    <span>￥{{ i.price }}</span>
+                                    <s>{{ i.marketprice }}</s>
+                                </p>
+                            </div>
+                        </a>
+                        <section>
+                            <button class="subShopping" g_id="{{ i.id }}">-</button>
+                            <span>0</span>
+                            <button class="addShopping" g_id="{{ i.id }}">+</button>
+                        </section>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <!--全部类型-->
+            <div id="typediv">
+                <div>
+                    {% for item in childList %}
+                        <a href="#"><span>{{item.childName}}</span></a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!--综合排序-->
+            <div id="sortdiv">
+                <div>
+
+                        <a class="sorta" href="#"><span>综合排序</span></a>
+                        <a class="sorta" href="#"><span>人气排序</span></a>
+                        <a class="sorta" href="#"><span>价格排序</span></a>
+                        <a class="sorta" href="#"><span>综合排序</span></a>
+
+                </div>
+            </div>
+
+
+        </menu>
+
+
+
+    </section>
+
+
+
+</div>
 {% endblock base  %}
