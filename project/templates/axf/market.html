@@ -14,7 +14,7 @@
                 {% for item in leftSlider %}
                 <li>
                     <span class="yellowSlide"></span>
-                    <a href="/market/{{item.typeid}}/0">{{item.typename}}</a>
+                    <a href="/market/{{item.typeid}}/0/0">{{item.typename}}</a>
                 </li>
                 {% endfor %}
             </ul>
@@ -71,7 +71,7 @@
             <div id="typediv">
                 <div>
                     {% for item in childList %}
-                        <a href="#"><span>{{item.childName}}</span></a>
+                        <a href="/market/{{categeryid}}/{{item.childId}}/0/"><span>{{item.childName}}</span></a>
                     {% endfor %}
                 </div>
             </div>
@@ -80,10 +80,10 @@
             <div id="sortdiv">
                 <div>
 
-                        <a class="sorta" href="#"><span>综合排序</span></a>
-                        <a class="sorta" href="#"><span>人气排序</span></a>
-                        <a class="sorta" href="#"><span>价格排序</span></a>
-                        <a class="sorta" href="#"><span>综合排序</span></a>
+                        <a class="sorta" href="/market/{{categeryid}}/{{cid}}/0/"><span>综合排序</span></a>
+                        <a class="sorta" href="/market/{{categeryid}}/{{cid}}/1/"><span>人气排序</span></a>
+                        <a class="sorta" href="/market/{{categeryid}}/{{cid}}/2/"><span>价格最低</span></a>
+                        <a class="sorta" href="/market/{{categeryid}}/{{cid}}/3/"><span>价格最高</span></a>
 
                 </div>
             </div>
