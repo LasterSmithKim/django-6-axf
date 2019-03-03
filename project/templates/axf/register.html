@@ -7,34 +7,75 @@
 {% endblock linkscript  %}
 
 {% block base %}
-    <div class="container">
-        <form action="{% url 'axf:register' %}" id="my_form" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="exampleInputEmail1">用户名</label>
-                <input type="text" class="form-control" id="u_name" placeholder="用户名大于3位" name="u_name" >
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">密码</label>
-                <input type="password" class="form-control" id="pwd" placeholder="密码" name="pwd">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputPassword1">确认密码</label>
-                <input type="password" class="form-control" id="c_pwd" placeholder="确认密码" name="confirm_pwd">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputPassword1">邮箱</label>
-                <input type="email" class="form-control" id="exampleInputPassword1" placeholder="邮箱" name="email">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputFile">选择头像图片</label>
-                <input type="file" id="exampleInputFile" name="u_icon">
-            </div>
-
-            <button type="submit" class="btn btn-success btn-block">注册</button>
-        </form>
+<div id="register">
+    <div id="header">
+        <a href="/mine/"><p> <返回</p></a>
     </div>
+    <form action="/register/" class="form-horizontal" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <span class="input-group-addon">账号</span>
+            <input id="accunt" type="text" class="form-control" placeholder="账号长度为6~12个字符"
+                   aria-describedby="basic-addon1" name="userAccount" >
+        </div>
+        <span id="accunterr" class="error">账号格式不正确</span>
+        <span id="checkerr" class="error">账号已被占用，请重新输入</span>
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">密码</span>
+            <input id="pass" type="password" class="form-control"  placeholder="密码长度为6~16个字符"
+                   aria-describedby="basic-addon1" name="userPass">
+        </div>
+        <span id="passerr" class="error">账号格式不正确</span>
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">验证</span>
+            <input id="passwd" type="password" class="form-control"  placeholder="密码长度为6~16个字符"
+                   aria-describedby="basic-addon1" name="userPasswd">
+        </div>
+        <span id="passwderr" class="error">两次密码输入不同</span>
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">昵称</span>
+            <input required="required" type="text" class="form-control" aria-describedby="basic-addon1" name="userName">
+        </div>
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">电话</span>
+            <input required="required" type="text" class="form-control" aria-describedby="basic-addon1" name="userPhone">
+        </div>
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">地址</span>
+            <input required="required" type="text" class="form-control" aria-describedby="basic-addon1" name="userAdd">
+        </div>
+
+        <br/>
+        <div class="input-group">
+            <span class="input-group-addon">头像</span>
+            <input required="required" type="file" class="form-control" aria-describedby="basic-addon1" name="userImg">
+        </div>
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">注册</span>
+            <input id='submiter' type="submit" class="form-control" aria-describedby="basic-addon1" value="注册">
+        </div>
+    </form>
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+
+

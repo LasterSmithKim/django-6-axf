@@ -1,8 +1,13 @@
 from django.shortcuts import render
-from .models import Wheel, Nav, Mustbuy,Shop,MainShow,FoodTypes,Goods
+from .models import Wheel, Nav, Mustbuy,Shop,MainShow,FoodTypes,Goods,User
 from .forms.login import LoginForm
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect
+import os
+import time
+import random
+from django.conf import settings
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -64,15 +69,31 @@ def cart(request):
 
 
 def mine(request):
-    return render(request, 'axf/mine.html', {'title':'我的'})
+    username = request.session.get('username','未登录')
+    return render(request, 'axf/mine.html', {'title':'我的','username':username})
 
 def login(request):
     if request.method == 'POST':
         f = LoginForm(request.POST)
         if f.is_valid():
             #信息格式没有多大问题，验证账号密码的正确性
-            name = f.cleaned_data['username']
+            nameid = f.cleaned_data['username']
             pwd = f.cleaned_data['passwd']
+            try:
+                user = User.objects.get(userAccount = nameid)
+                if user.userPasswd != pwd :
+                    #登录失败
+                    return redirect('/login/')
+            except User.DoesNotExist as e:
+                #登录失败
+                return redirect('/login/')
+            #登录成功
+            userToken = str(time.time() + random.randrange(1, 100000))
+            user.userToken = userToken
+            user.save()
+            request.session['username'] = user.userName
+            request.session['token'] = user.userToken
+
             return redirect('/mine/')
         else:
             return render(request, 'axf/login.html', {'title': '登录', 'form':f, 'error': f.errors})
@@ -80,9 +101,49 @@ def login(request):
         f = LoginForm()
         return render(request, 'axf/login.html', {'title': '登录','form': f})
 
-def register(request):
-    return render(request, 'axf/register.html', {'title':'注册'})
 
+
+def register(request):
+    if request.method == 'POST':
+        userAccount = request.POST.get('userAccount')
+        userPasswd = request.POST.get('userPasswd')
+        userName = request.POST.get('userName')
+        userPhone = request.POST.get('userPhone')
+        userAdderss = request.POST.get('userAdd')
+        userRank = 0
+        userToken = str(time.time() + random.randrange(1,100000))
+        #头像图片上传
+        f = request.FILES['userImg']
+        userImg = os.path.join(settings.MEDIA_ROOT, userAccount + '.png')
+        with open(userImg,'wb') as fp:
+            for data in f.chunks():
+                fp.write(data)
+        #创建用户到数据库
+        user = User.createuser(userAccount, userPasswd, userName, userPhone, userAdderss, userImg, userRank, userToken)
+        user.save()
+        #sessions数据保持
+        request.session['username'] = userName
+        request.session['token'] = userToken
+
+        return redirect('/mine/')
+
+    else:
+        return render(request, 'axf/register.html', {'title':'注册'})
+
+#退出登录
+def quit(request):
+    logout(request)
+    return redirect('/mine/')
+
+#验证账号是否被注册
+def checkuserid(request):
+    userid = request.POST.get('userid')
+
+    try:
+        user = User.objects.get(userAccount = userid)
+        return JsonResponse({'data':'该用户已经被注册','status':'error'})
+    except User.DoesNotExist as e:
+        return JsonResponse({'data':'可以注册','status':'success'})
 
 
 

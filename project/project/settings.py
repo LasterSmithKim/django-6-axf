@@ -128,4 +128,4 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/mdeia/'
-MEDIA_ROOT = os.path.join(BASE_DIR, r'static/mdeia')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/mdeia')
