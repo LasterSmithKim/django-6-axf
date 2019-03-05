@@ -83,10 +83,12 @@ def login(request):
                 user = User.objects.get(userAccount = nameid)
                 if user.userPasswd != pwd :
                     #登录失败
-                    return redirect('/login/')
+                    f = LoginForm()
+                    return render(request, 'axf/login.html', {'title': '登录', 'form': f, 'error': '密码输入错误！'})
             except User.DoesNotExist as e:
                 #登录失败
-                return redirect('/login/')
+                f = LoginForm()
+                return render(request, 'axf/login.html', {'title': '登录', 'form': f, 'error': '用户名不存在！'})
             #登录成功
             userToken = str(time.time() + random.randrange(1, 100000))
             user.userToken = userToken
@@ -96,7 +98,8 @@ def login(request):
 
             return redirect('/mine/')
         else:
-            return render(request, 'axf/login.html', {'title': '登录', 'form':f, 'error': f.errors})
+            f = LoginForm()
+            return render(request, 'axf/login.html', {'title': '登录', 'form':f, 'error': '信息格式验证错误！'})
     else:
         f = LoginForm()
         return render(request, 'axf/login.html', {'title': '登录','form': f})

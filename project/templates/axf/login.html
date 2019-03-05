@@ -15,21 +15,16 @@
             <div class="form-control">
                 账号：{{form.username}}
                 <br/>
-                {% if error.username.0 %}
-                <span>{{error.username.0}}</span>
-                {% endif %}
             </div>
 
             <div class="form-control">
                 密码：{{form.passwd}}
                 <br/>
-                {% if error.passwd.0 %}
-                <span>{{error.passwd.0}}</span>
-                {% endif %}
             </div>
             <div>
                 <input class="btn btn-default" type="submit" value="登录">
             </div>
+            <span>{{error}}</span>
         </form>
     </div>
 </div>
