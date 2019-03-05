@@ -10,3 +10,10 @@ header {
     background: whitesmoke;
     overflow: hidden;
 }
+
+.error{
+    margin-left: 0.5rem;
+    font-size: 0.3rem;
+    color: #e62e2e;
+    display: block;
+}
