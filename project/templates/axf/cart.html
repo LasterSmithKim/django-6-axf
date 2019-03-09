@@ -7,9 +7,122 @@
 {% endblock linkscript  %}
 
 {% block base  %}
-<h1>sunck is a good man</h1>
-<h1>sunck is a good man</h1>
-<h1>sunck is a good man</h1>
-<h1>sunck is a good man</h1>
-<h1>cart</h1>
+
+<div id="cart">
+    <h3>{{ title }}</h3>
+
+    <div class="full">
+        <section>
+            <ul>
+                <li>
+                    收货人：{{ user.username }}
+                    <div>
+                        <p>更多&gt;</p>
+                    </div>
+                </li>
+                <li>
+                    电话：{{ user.phone }}
+
+                </li>
+                <li>
+                    收货地址：{{ user.address }}
+                </li>
+            </ul>
+            <div class="bill">
+                <p>
+                    闪送超市
+                </p>
+                <p>
+                    满100减30 欢迎采购
+                </p>
+                <a href="">凑单专区&gt;</a>
+            </div>
+
+            <div class="delivery">
+                <span>
+                    收货时间
+                </span>
+                <span>
+                    一小时送达
+                </span>
+                <a href="">可预订&gt;</a>
+            </div>
+
+            <div class="delivery">
+                <span>备注留言</span>
+                <input type="text" placeholder="如有特殊服务请留言">
+            </div>
+
+            {# 购物车商品列表#}
+            <menu>
+                <ul>
+                    {% for cart_item in cart_items %}
+                        <li class="menuList" c_id="{{ cart_item.id }}">
+                            <div class="confirm">
+
+
+                                {% if cart_item.is_select %}
+                                    <span>
+                                        <span>
+                                           √
+                                        </span>
+                                    </span>
+                                {% else %}
+                                    <span>
+                                        <span></span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <a href="">
+                                <img src="{{ cart_item.goods.productimg }}" alt="">
+                                <p>
+                                    {{ cart_item.goods.productlongname }}
+                                </p>
+                                <p>
+                                    {{ cart_item.goods.price }}
+                                </p>
+                            </a>
+                            <section>
+                                <button class="sub_btn">-</button>
+                                <span>{{ cart_item.num }}</span>
+                                <button class="add_btn">+</button>
+                            </section>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </menu>
+
+            {#付款#}
+            <div class="payTheBill">
+                <div class="all_select">
+
+                    {% if is_all_select %}
+                    {#如果是全选中状态那么加 对号#}
+                        <span>
+                            <span>
+                                √
+                            </span>
+                        </span>
+                    {% else %}
+                        <span>
+                            <span>
+
+                            </span>
+                        </span>
+                    {% endif %}
+                </div>
+                <p>
+                    <span>全选</span>
+                    <span>共计：</span>
+                    <span id="sum_money">{{ sum_money }}</span>
+                </p>
+                <span>
+                    下单
+                </span>
+            </div>
+        </section>
+    </div>
+</div>
+
 {% endblock base  %}

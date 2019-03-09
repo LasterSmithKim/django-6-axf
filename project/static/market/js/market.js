@@ -5,6 +5,10 @@ $(document).ready(function(){
     var typediv = document.getElementById("typediv")
     var sortdiv = document.getElementById("sortdiv")
 
+
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+
+
     typediv.style.display = "none"
     sortdiv.style.display = "none"
 
@@ -26,6 +30,41 @@ $(document).ready(function(){
     sortdiv.addEventListener("click",function(){  typediv.style.display = "none"
         sortdiv.style.display = "none"
     },false)
+
+    //修改购物车
+    var addShoppings = document.getElementsByClassName('addShopping')
+    var subShoppings = document.getElementsByClassName('subShopping')
+
+    for ( var i = 0 ; i < addShoppings.length ; i++){
+        addShopping = addShoppings[i]
+
+        addShopping.addEventListener('click', function(){
+            pid = this.getAttribute('g_id') /*getAttribute 获取自定义属性 */
+            $.post('/changecart/0/', {'productid': pid,'csrfmiddlewaretoken': csrf}, function(data){
+                if (data.status == 'success'){
+                    /*添加成功，把中间的span的innerHTML变成当前的数量*/
+                    console.log('登录')
+                }else {
+                    if (data.data == -1){
+                        console.log('未登录')
+                    }
+                }
+            })
+        },false)
+    }
+
+    for ( var i = 0 ; i < subShoppings.length ; i++){
+        subShopping = subShoppings[i]
+
+        subShopping.addEventListener('click', function(){
+            pid = this.getAttribute('g_id') /*getAttribute 获取自定义属性 */
+            $.post('/changecart/1/', {'productid': pid,'csrfmiddlewaretoken': csrf}, function(data){
+                if (data.status == 'success'){
+                    /*添加成功，把中间的span的innerHTML变成当前的数量*/
+                }
+            })
+        },false)
+    }
 
 
 

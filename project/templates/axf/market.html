@@ -7,6 +7,7 @@
 {% endblock linkscript  %}
 
 {% block base  %}
+{% csrf_token %}
 <div id="market">
     <aside>
         <menu>
@@ -59,9 +60,9 @@
                             </div>
                         </a>
                         <section>
-                            <button class="subShopping" g_id="{{ i.id }}">-</button>
-                            <span>0</span>
-                            <button class="addShopping" g_id="{{ i.id }}">+</button>
+                            <button class="subShopping" g_id="{{ i.productid }}">-</button>
+                            <span id="{{i.productid}}">0</span>
+                            <button class="addShopping" g_id="{{ i.productid }}">+</button>
                         </section>
                     </li>
                 {% endfor %}

@@ -72,6 +72,22 @@ def mine(request):
     username = request.session.get('username','未登录')
     return render(request, 'axf/mine.html', {'title':'我的','username':username})
 
+
+#修改购物车
+def changecart(request,flag):
+    # 判断用户是否登录？
+    token = request.session.get('token')
+    if token == None:
+        #没有登录，ajax请求过来 无法重定向；可以返回json数据 让js接收json数据 进行DOM元素操作 返回-1 表示未登录
+        print("***********")
+        return JsonResponse({'data':'-1', 'status':'error'})
+    return JsonResponse({'data': '1', 'status': 'success'})
+
+
+
+
+
+
 def login(request):
     if request.method == 'POST':
         f = LoginForm(request.POST)
