@@ -43,10 +43,11 @@ $(document).ready(function(){
             $.post('/changecart/0/', {'productid': pid,'csrfmiddlewaretoken': csrf}, function(data){
                 if (data.status == 'success'){
                     /*添加成功，把中间的span的innerHTML变成当前的数量*/
-                    console.log('登录')
+                    document.getElementById(pid).innerHTML = data.data
                 }else {
                     if (data.data == -1){
-                        console.log('未登录')
+                        var href = 'http://' + window.location.host + '/login/'
+                        window.location.href = href
                     }
                 }
             })

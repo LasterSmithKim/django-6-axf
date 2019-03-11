@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Wheel, Nav, Mustbuy,Shop,MainShow,FoodTypes,Goods,User
+from .models import Wheel, Nav, Mustbuy,Shop,MainShow,FoodTypes,Goods,User,Cart
 from .forms.login import LoginForm
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect
@@ -79,9 +79,46 @@ def changecart(request,flag):
     token = request.session.get('token')
     if token == None:
         #没有登录，ajax请求过来 无法重定向；可以返回json数据 让js接收json数据 进行DOM元素操作 返回-1 表示未登录
-        print("***********")
         return JsonResponse({'data':'-1', 'status':'error'})
-    return JsonResponse({'data': '1', 'status': 'success'})
+
+    productid = request.POST.get('productid')
+    product = Goods.objects.get(productid = productid)#获取数据库中商品的所有信息
+    user = User.objects.get(userToken = token)
+
+    if flag == '0':
+        carts = Cart.objects.filter(userAccount =user.userAccount)#取出某个人的所有商品
+        c = None
+        if carts.count() == 0:
+            #一条订单都没有，就直接增加一条订单
+            c = Cart.createcart(user.userAccount, productid, 1, product.price, True,
+                                product.productimg, product.productlongname, False,)
+            c.save()
+        else:
+            try:
+                c = carts.get(productid = productid)#取出某人的某一条商品
+                #修改数量和价格
+                c.productnum += 1
+                c.productprice = "%.2f"%(float(product.price) * c.productnum)
+                c.save()
+            except Cart.DoesNotExist as e:
+                #某人有订单，但是没有该商品的订单，就直接增加一条订单
+                c = Cart.createcart(user.userAccount, productid, 1, product.price, True,
+                                    product.productimg, product.productlongname, False, )
+                c.save()
+    return JsonResponse({'data':c.productnum, 'status':'success'})
+
+'''
+    elif flag == 1:
+        pass
+    elif flag == 2:
+        pass
+    elif flag == 3:
+        pass
+'''
+
+
+
+
 
 
 
