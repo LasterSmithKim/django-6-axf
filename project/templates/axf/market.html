@@ -42,6 +42,7 @@
 
         <menu>
             <ul>
+
                 {% for i in productList %}
                     <li>
                         <a href="#">
@@ -61,7 +62,7 @@
                         </a>
                         <section>
                             <button class="subShopping" g_id="{{ i.productid }}">-</button>
-                            <span id="{{i.productid}}">0</span>
+                                <span id="{{i.productid}}">{{i.num|default:0}}</span>
                             <button class="addShopping" g_id="{{ i.productid }}">+</button>
                         </section>
                     </li>

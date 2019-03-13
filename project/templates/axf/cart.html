@@ -7,7 +7,7 @@
 {% endblock linkscript  %}
 
 {% block base  %}
-
+{% csrf_token %}
 <div id="cart">
     <h3>{{ title }}</h3>
 
@@ -56,37 +56,33 @@
             {# 购物车商品列表#}
             <menu>
                 <ul>
-                    {% for cart_item in cart_items %}
-                        <li class="menuList" c_id="{{ cart_item.id }}">
-                            <div class="confirm">
+                    {% for cart_item in cartlist %}
+                        <li id="{{ cart_item.productid }}li"  class="menuList" c_id="{{ cart_item.productid }}">
+                            <div class="confirm" goodsid="{{cart_item.productid}}">
 
-
-                                {% if cart_item.is_select %}
                                     <span>
-                                        <span>
-                                           √
+                                        <span id="{{cart_item.productid}}a">
+                                            {% ifequal True cart_item.isChose %}
+                                            √
+                                            {% endifequal %}
                                         </span>
                                     </span>
-                                {% else %}
-                                    <span>
-                                        <span></span>
-                                    </span>
-                                {% endif %}
+
                             </div>
                             <a href="">
-                                <img src="{{ cart_item.goods.productimg }}" alt="">
+                                <img src="{{ cart_item.productimg }}" alt="">
                                 <p>
-                                    {{ cart_item.goods.productlongname }}
+                                    {{ cart_item.productname }}
                                 </p>
-                                <p>
-                                    {{ cart_item.goods.price }}
+                                <p id= "{{cart_item.productid}}price">
+                                    {{ cart_item.productprice }}
                                 </p>
                             </a>
                             <section>
-                                <button class="sub_btn">-</button>
-                                <span>{{ cart_item.num }}</span>
-                                <button class="add_btn">+</button>
-                            </section>
+                                <button class="subShopping" g_id="{{ cart_item.productid }}">-</button>
+                                    <span id="{{cart_item.productid}}">{{cart_item.productnum|default:0}}</span>
+                                <button class="addShopping" g_id="{{ cart_item.productid }}">+</button>
+                        </section>
                         </li>
                     {% endfor %}
 

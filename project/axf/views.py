@@ -57,15 +57,31 @@ def market(request,categeryid,cid,sortid):
         obj = {"childName":arr2[0],"childId":arr2[1]}
         childList.append(obj)
 
+    token = request.session.get("token")
+    if token:
+        user = User.objects.get(userToken = token)
+        cartlist = Cart.objects.filter(userAccount = user.userAccount)
 
-
+        for p in productList:
+            for c in cartlist:
+                if c.productid == p.productid:
+                    p.num = c.productnum
+                    continue
 
     return render(request, 'axf/market.html',{'title':'闪送超市','leftSlider':leftSlider,'productList':productList,
-                                              'childList':childList, 'categeryid':categeryid, 'cid':cid})
+                                              'childList':childList, 'categeryid':categeryid, 'cid':cid,
+                                             })
 
 
 def cart(request):
-    return render(request, 'axf/cart.html', {'title':'购物车'})
+    cartlist = []
+    token = request.session.get("token")
+    if token:
+        user = User.objects.get(userToken=token)
+        cartlist = Cart.objects.filter(userAccount=user.userAccount)
+
+
+    return render(request, 'axf/cart.html', {'title':'购物车', 'cartlist':cartlist})
 
 
 def mine(request):
@@ -86,6 +102,9 @@ def changecart(request,flag):
     user = User.objects.get(userToken = token)
 
     if flag == '0':
+        if product.storenums == 0:
+            return JsonResponse({"data": -2, "status": "error"})  # -2 库存没有了
+
         carts = Cart.objects.filter(userAccount =user.userAccount)#取出某个人的所有商品
         c = None
         if carts.count() == 0:
@@ -105,13 +124,45 @@ def changecart(request,flag):
                 c = Cart.createcart(user.userAccount, productid, 1, product.price, True,
                                     product.productimg, product.productlongname, False, )
                 c.save()
-    return JsonResponse({'data':c.productnum, 'status':'success'})
+        #库存减去1
+        product.storenums -= 1
+        product.save()
+        return JsonResponse({'data':c.productnum, 'price':c.productprice, 'status':'success'})
 
+
+    elif flag == '1':
+        carts = Cart.objects.filter(userAccount =user.userAccount)#取出某个人的所有商品
+        c = None
+        if carts.count() == 0:
+            return JsonResponse({"data":-2, "status":"error"})
+        else:
+            try:
+                c = carts.get(productid = productid)#取出某人的某一条商品
+                #修改数量和价格
+                c.productnum -= 1
+                c.productprice = "%.2f"%(float(product.price) * c.productnum)
+                if c.productnum == 0:
+                    c.delete()
+                else:
+                    c.save()
+
+            except Cart.DoesNotExist as e:
+                return JsonResponse({"data": -2, "status": "error"})
+        #库存加上1
+        product.storenums += 1
+        product.save()
+        return JsonResponse({'data': c.productnum, 'price':c.productprice, 'status':'success'})
+
+    elif flag == '2':
+        carts = Cart.objects.filter(userAccount=user.userAccount)
+        c = carts.get(productid=productid)
+        c.isChose = not c.isChose
+        c.save()
+        str = ''
+        if c.isChose:
+            str = '√'
+        return JsonResponse({'data':str, 'status':'success'})
 '''
-    elif flag == 1:
-        pass
-    elif flag == 2:
-        pass
     elif flag == 3:
         pass
 '''

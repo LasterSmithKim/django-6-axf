@@ -51,7 +51,7 @@ $(document).ready(function(){
                     }
                 }
             })
-        },false)
+        })
     }
 
     for ( var i = 0 ; i < subShoppings.length ; i++){
@@ -62,9 +62,10 @@ $(document).ready(function(){
             $.post('/changecart/1/', {'productid': pid,'csrfmiddlewaretoken': csrf}, function(data){
                 if (data.status == 'success'){
                     /*添加成功，把中间的span的innerHTML变成当前的数量*/
+                    document.getElementById(pid).innerHTML = data.data
                 }
             })
-        },false)
+        })
     }
 
 
