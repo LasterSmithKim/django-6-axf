@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Wheel, Nav, Mustbuy,Shop,MainShow,FoodTypes,Goods,User,Cart
+from .models import Wheel, Nav, Mustbuy,Shop,MainShow,FoodTypes,Goods,User,Cart,Order
 from .forms.login import LoginForm
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect
@@ -253,7 +253,26 @@ def checkuserid(request):
         return JsonResponse({'data':'可以注册','status':'success'})
 
 
+#下订单
+def saveoder(request):
+    # 判断用户是否登录？
+    token = request.session.get('token')
+    if token == None:
+        return JsonResponse({'data': '-1', 'status': 'error'})
+    user = User.objects.get(userToken=token)
+    carts = Cart.objects.filter(userAccount=user.userAccount).filter(isChose = True)
+    if carts.count() == 0:
+        return JsonResponse({'data': '-1', 'status': 'error'})
+    oid = time.time() + random.randrange(1, 10000)
+    oid = "%d"%oid
+    o = Order.createarder(oid, user.userAccount, 0)
+    o.save()
 
+    for item in carts:
+        item.isDelete = True
+        item.orderid  = oid
+        item.save()
+    return JsonResponse({'status': 'success'})
 
 
 

@@ -99,6 +99,10 @@ class User(models.Model):
                userAdderss=address, userImg=img, userRank=rank, userToken=token)
        return u
 
+
+class CartManger1(models.Manager):
+    def get_queryset(self):
+        return super(CartManger1, self).get_queryset().filter(isDelete = False)
 class Cart(models.Model):
     userAccount = models.CharField(max_length=20)
     productid = models.CharField(max_length=10)
@@ -109,13 +113,22 @@ class Cart(models.Model):
     productname = models.CharField(max_length=100)
     orderid = models.CharField(max_length=20, default='0')
     isDelete = models.BooleanField(default=False)
+    objects = CartManger1()
     @classmethod
     def createcart(cls,userAccount,productid,productnum,productprice,isChose,productimg,productname,isDelete):
         c = cls(userAccount=userAccount, productid=productid, productnum=productnum, productprice=productprice,
                 isChose=isChose, productimg=productimg, productname=productname, isDelete=isDelete)
         return c
 
+class Order(models.Model):
+    orderid = models.CharField(max_length=20)
+    userid = models.CharField(max_length=20)
+    progress = models.IntegerField()
 
+    @classmethod
+    def createarder(cls, orderid, userid, progress):
+        o = cls(orderid=orderid, userid=userid, progress=progress)
+        return o
 
 
 

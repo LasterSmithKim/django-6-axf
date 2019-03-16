@@ -61,5 +61,18 @@ $(document).ready(function(){
         },false)
     }
 
+    var ok = document.getElementById("ok")
+    ok.addEventListener("click", function(){
+        var f = confirm("确认是否下单？")
+        if (f) {
+            $.post("/saveoder/", {'csrfmiddlewaretoken': csrf}, function(data){
+                if (data.status = 'success'){
+                    window.location.href = ('http://' + window.location.host + '/cart/')
+                    }
+            })
+        }
+    },false)
+
+
 
 })

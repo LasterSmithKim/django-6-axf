@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'axf',
         'USER': 'usermysite',
         'PASSWORD': 'smithkim123',
-        'HOST': '192.168.1.111',
+        'HOST': '192.168.43.136',
         'PORT': '5432',
     }
 }
